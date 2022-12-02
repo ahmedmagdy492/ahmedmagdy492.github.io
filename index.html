@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title" content="Take Break 2" />
+    <meta property="og:type" content="windows.application" />
+    <meta property="og:url" content="https://github.com/ahmedmagdy492" />
+    <meta property="og:image" content="take break 2.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Take Break 2 - is an app that acts as an alarm that triggers at time you specified frequently and alerts you to take a break from setting infront of your computer for a long period."/>
+    <title>Take Break 2</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <style>
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            margin: 0;
+        }
+        .container{
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-areas: "navbar" "content" "footer";
+        }
+        .inner-container {
+            background-image: url('./wave.png');
+            grid-area: "footer";
+            width: 100%;
+            background-size: cover;
+        }
+        .navbar {
+            height: 6.5vh;
+            grid-area: "navbar";
+            color: seagreen;
+            border-bottom: 1px solid seagreen;
+        }
+        .navbar ul {
+            display: flex;
+            justify-content:start;
+        }
+        .navbar li {
+            list-style: none;
+            font-size: 1.2em;
+            margin: 0 15px;
+        }
+        .navbar li a {
+            color: seagreen;
+            text-decoration: none;
+        }
+        .navbar li a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            grid-area: "content";
+            height: 40vh;
+        }
+        .content h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 25px;
+        }
+        .btn-download {
+            color: seagreen;
+            border: 1px seagreen solid;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-download:hover {
+            background-color: seagreen;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="navbar">
+            <ul>
+                <li style="background: lime;font-size: 20px;font-family: vivaldi;font-weight: bold;color: black;padding: 10px;margin-top:-15px;margin-left: -40px;">Take Break 2</li>
+                <li><a href="index.html" style="text-decoration: underline;">Home</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1 style="font-size: 45px;">Take Break 2</h1>
+            <div style="justify-content: center;display: flex;">
+                <a download="take-break2.zip" href="https://github.com/ahmedmagdy492/Take-Break-2/releases/download/v1.0.0.0/Take.Break.2.zip" style="text-decoration: none;width: 10%;" class="btn-download">Download V1.0.0</a>
+            </div>
+        </div>
+        <div class="inner-container">
+
+        </div>
+    </div>
+
+</body>
+</html>
