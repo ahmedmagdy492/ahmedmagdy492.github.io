@@ -19,18 +19,12 @@
         body {
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             margin: 0;
-            background: url('assets/bg.jpg');
-            background-size: cover;
-            position: relative;
-            overflow: hidden !important;
         }
     </style>
 </head>
 <body>
-
-    <div style="background: #fff;opacity: 0.6;position: absolute;left: 0;top: 0;width: 1000vh;height: 100vh;overflow: hidden;"></div>
     
-    <div style="position: relative;z-index: 3">
+    <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="index.html">Take Break</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,20 +33,30 @@
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="user-guide.html">User Guide</a>
+                  <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="user-guide.html">User Guide <span class="sr-only">(current)</span></a>
                 </li>
               </ul>
             </div>
           </nav>
-        <div class="content">
-            <h1 class="text-center my-5" style="font-size: 45px;">Take Break <span style="font-size: 16px !important;">V3.0</span></h1>
-            <h6 style="font-weight: bold;" class="text-center">If you are struggling with oraganizing your breaks, then you have come to the right place</h6>
-            <div class="my-5" style="justify-content: center;display: flex;">
-                <a download="take-break2.zip" href="https://github.com/ahmedmagdy492/Take-Break-2/releases/download/v3.0/Take.Break.Installer.exe" class="btn btn-primary">Download for Windows 32-bit</a>
+        <div class="content m-3">
+            <div>
+                <h3>Starting the Timer</h3>
+                <img src="assets/form1.png" height="250"/>
+            </div>
+
+            <div class="mt-4">
+                <h3>Changing Settings</h3>
+                <h6>You can just set the periods as you wish but Alarm Period will be at least 5 mins and Waiting Time will be at least 3 mins and then hit save and the changes will take effect immediately</h6>
+                <img src="assets/settings.png" height="250"/>
+            </div>
+
+            <div class="mt-4">
+                <h3>Running the Application in the Background</h3>
+                <h6>You can just close the window using the normal close button a notification will popup indicating that the application will be running in the background.</h6>
             </div>
         </div>
     </div>
