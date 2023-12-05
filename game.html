@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shooting the Boxes | Game</title>
+    <link rel="stylesheet" href="./css/game.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="toolbar">
+
+            <!-- showing the user name -->
+            <div id="player-name">
+
+            </div>
+
+            <!-- timer -->
+            <div class="timer">
+                0<span id="mins">5</span>
+                :
+                <span id="secs">00</span>
+            </div>
+
+            <div class="score">
+                Score: <span id="score">0</span>
+            </div>
+
+            <!-- sound muter -->
+            <div class="audio">
+                <div><img title="mute/unmute music" id="toggle-sound" src="./imgs/sound.png" class="img-sound" alt=""></div>
+            </div>
+
+            <div class="exit" title="Quit Game">
+                Quit Game
+            </div>
+
+            <div class="stop">
+                <img id="stop-menu" title="Stop/Resume Game" src="./imgs/pause.png" alt="">
+            </div>
+        </div>
+        <!-- end of toolbar -->
+
+        <!-- game frame -->
+        <div class="game-frame">
+            <img id="player" src="./imgs/spacecraft.png" style="transition: all 0.1s ease-out;width: 80px;position: absolute; height: 80px;" alt="" class="player">
+        </div>
+        <!-- end of game frame -->
+
+    </div>
+    <!-- end of the parent container-->
+
+    <!-- background music -->
+    <audio style="display: none;" loop>
+        <source src="./audio/bck.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- game stop -->
+    <div id="stop-game">
+        Pause
+        <ul style="list-style-type: none;margin-top: 30px;">
+            <li>Press <span class="hint">M</span> to mute/unmute the music</li>
+            <li>Destroy <img src="./imgs/mars.png" style="width: 40px; height:40px;margin-top: 20px;" alt=""> it will give you extra score</li>
+        </ul>
+    </div>
+
+    <!-- pop-up html -->
+    <div class="msg-container">
+        <h1 style="font-size: 80px;text-align: center;">Space Defender</h1>
+        <h1 id="title">oh Sorry you lost ....</h1>
+        <h1 id="score-last">Your Score is 20</h1>
+        <div class="btns-ask">
+            <button id="btnPlayAgain">
+                Play Again
+            </button>
+            <button id="btnCancel">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- <script src="./js/pop-up.js"></script> -->
+    <script src="./js/game.js"></script>
+</body>
+</html>
