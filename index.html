@@ -21,6 +21,22 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             margin: 0;
         }
+        @keyframes img-animate {
+          0% {opacity: 1; transform: translate(0, 0px);}
+          50% {opacity: 0.5; transform: translate(0, 0px);}
+          75% {opacity: 1; transform: translate(0, 10px);}
+          100% {opacity: 1; transform: translate(0, 0px);}
+        }
+
+        .img-animate {
+          animation-name: img-animate;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+        }
+
+        body {
+          scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body>
@@ -55,45 +71,26 @@
               </a>
             </div>
           </nav>
-        <div class="content" style="display: flex;justify-content: center;position: relative;">
-            <img src="./imgs/basra-imgs/basra1.png" id="img-carsoul" class="img-thumbnail" />
+        <div class="content" style="display: flex;justify-content: center;position: relative;background: linear-gradient(-141deg, #2196f3, #c471ed, #f44336)">
+          <div>
+            <h1 class="text-center" style="margin-top:200px;color: white;text-shadow: #000 2px 2px;">Ahmed Magdy</h1>
+            <h2 class="text-center" style="margin-top:40px;color: white;">Professional Software Developer</h2>
+
+            <div style="margin-top: 100px;margin-bottom: 100px;display: flex; justify-content: center;">
+              <a href="https://www.linkedin.com/in/ahmed-magdy-%F0%9F%87%B5%F0%9F%87%B8-abb402140/" target="_blank">
+                <img src="./assets/linkedin.png" width="50" height="50">
+              </a>
+            </div>
+
+            <div style="background: #ddd;width: 50px;height: 50px;margin-top: 100px;border-radius: 50%;margin-left: auto;margin-right: auto;display: flex; justify-content: center;margin-bottom: 200px;">
+              <img src="./assets/move.png" width="40" height="40" style="margin-top: 5px;" class="img-animate">
+            </div>
+          </div>
         </div>
-        
     </div>
 
     <script>
-      let cur_index = 0;
-      window.addEventListener('load', function() {
-        setInterval(() => {
-          const imgs = [
-            './imgs/basra-imgs/basra1.png',
-            './assets/enc_chat.png',
-            './assets/My-File-Sender.png',
-            './assets/snake.png',
-            './assets/tic-tac-toe.png',
-            './assets/space_defender_img.png'
-          ];
-
-          const txts = [
-            'Basra Cards Game',
-            'Encrypted Chat',
-            'My File Sender',
-            'Snake Game',
-            'Tic Tac Toe',
-            'Space Defender'
-          ];
-
-          const img = document.querySelector("#img-carsoul");
-          const text = document.querySelector('#text-carsoul');
-          img.src = imgs[cur_index];
-          if(cur_index < imgs.length-1) {
-            cur_index++;
-          }
-          else {
-            cur_index = 0;
-          }
-        }, 2000);
-      })
+      
     </script>
 </body>
 </html>
