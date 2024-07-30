@@ -15,7 +15,7 @@
         },
         {
             "name": "Basra Cards Game",
-            "posterUrl": "./imgs/basra-imgs/basra1.webp",
+            "posterUrl": "./assets/basra.webp",
             "altText": "basra cards game",
             "description": "is a simple cards game made with only C and Raylib",
             "links": [
@@ -39,7 +39,7 @@
         },
         {
             "name": "Hack Assembler",
-            "posterUrl": "https://github.com/ahmedmagdy492/Simple-Hack-Assembler/raw/master/Hack%20app%20preview.webp",
+            "posterUrl": "https://github.com/ahmedmagdy492/Simple-Hack-Assembler/raw/master/Hack%20app%20preview.png",
             "altText": "Hack Assembler",
             "description": "A Simple Assembler for the hack machine language. this part of the from nand to tetris course",
             "links": [
