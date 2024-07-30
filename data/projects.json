@@ -1,0 +1,192 @@
+{
+    "projects": [
+        {
+            "name": "The Drawing App",
+            "posterUrl": "./assets/drawnig-app-logo.png",
+            "altText": "The drawing app on play store",
+            "description": "is a simple and easy to use drawing app for all ages",
+            "links": [
+                {
+                    "url": "https://play.google.com/store/apps/details?id=io.github.ahmedmagdy492.thedrawingapp",
+                    "img": "./assets/playstore.png",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "Basra Cards Game",
+            "posterUrl": "./imgs/basra-imgs/basra1.png",
+            "altText": "basra cards game",
+            "description": "is a simple cards game made with only C and Raylib",
+            "links": [
+                {
+                    "url": "Basra.html",
+                    "text": "View Details"
+                }
+            ]
+        },
+        {
+            "name": "Connect 4",
+            "posterUrl": "./imgs/connect4.png",
+            "altText": "connect4 game",
+            "description": "The classic Connect 4 game made with C++ and Raylib",
+            "links": [
+                {
+                    "url": "./connect4.html",
+                    "text": "View Details"
+                }
+            ]
+        },
+        {
+            "name": "Hack Assembler",
+            "posterUrl": "https://github.com/ahmedmagdy492/Simple-Hack-Assembler/raw/master/Hack%20app%20preview.png",
+            "altText": "Hack Assembler",
+            "description": "A Simple Assembler for the hack machine language. this part of the from nand to tetris course",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Simple-Hack-Assembler/releases/download/v1.0/Hack.Assembler.x64.zip",
+                    "text": "Download for windows 64 bit"
+                }
+            ]
+        },
+        {
+            "name": "Snake",
+            "posterUrl": "assets/snake.png",
+            "altText": "snake game",
+            "description": "The well known old snake game is available on Windows and Linux",
+            "links": [
+                {
+                    "url": "snake.html",
+                    "text": "View Details"
+                }
+            ]
+        },
+        {
+            "name": "Snake Improved",
+            "posterUrl": "https://i.ytimg.com/vi/iYvnkew0MX0/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARg1IGUoMDAP&rs=AOn4CLD-Fr3J4v-Uygvn4YB-QDuvWFIUVg",
+            "altText": "snake game improved",
+            "description": "I've already created a snake game before but back then it was my first time to create a game with C and of course i had no enough experience in game dev so the game was just terrible even this one is not as good as you might expect but it's improved in...<a href=\"https://github.com/ahmedmagdy492/Snake_Improved?tab=readme-ov-file#snake-game-improved\"  target=\"_blank\">Read More</a>",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Snake_Improved/releases/download/Beta/Snake_Improved.zip",
+                    "text": "Download for Windows"
+                }
+            ]
+        },
+        {
+            "name": "Turbo Download Manager",
+            "posterUrl": "/logo.png",
+            "altText": "Turbo Download Manager",
+            "description": "is a simple file downlaoder that is built using C# and Windows Forms, currently it supports the http protocol only and uses range requests to create multiple threads for faster downloading and to shorten downloading time.",
+            "links": [
+                {
+                    "url": "Turbo Download Manager.html",
+                    "text": "View Details"
+                }
+            ]
+        },
+        {
+            "name": "Tic Tac Toe With Basic AI",
+            "posterUrl": "./assets/tic-tac-toe.png",
+            "altText": "Tic Tac Toe With Basic AI",
+            "description": "Made with html, css and js used the Mini-Max algorthem to implement basic AI",
+            "links": [
+                {
+                    "url": "/Tic-Tac-Toe/",
+                    "text": "Play Now",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "Space Defeneder",
+            "posterUrl": "/assets/space_defender_img.png",
+            "altText": "Space Defeneder",
+            "description": "A simple and small game made only with html, css and js without even using the canvas to draw",
+            "links": [
+                {
+                    "url": "./space-defender.html",
+                    "text": "Play Now",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "Pong",
+            "posterUrl": "imgs/pong.png",
+            "altText": "pong game",
+            "description": "The classic pong game made with C++ and Raylib",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Pong/releases/tag/v1",
+                    "text": "View Details",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "Take Break",
+            "posterUrl": "/assets/take break.png",
+            "altText": "take break",
+            "description": "A Windows Desktop app to organize your breaks made using C# and Windows Forms",
+            "links": [
+                {
+                    "url": "./Take-break.html",
+                    "text": "View Details"
+                }
+            ]
+        },
+        {
+            "name": "The Hanging Spider",
+            "posterUrl": "https://i.ytimg.com/vi/nDL844UTWn0/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIGUoZTAP&rs=AOn4CLB6Wy2K4j_jIcSPAoFVx0C5H66lXA",
+            "altText": "the haning spider",
+            "description": "in its essence it's similar to the hangman game except that it has a little bit different gameplay. the app is divided into 2 apps the server app (which uses nodejs) and client app which is this flutter app. the client and the server uses socket.io to open a bi-directional channel for real time communication. the game rules are quite simple you just join and wait for another player to join ...",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/The-Hanging-Spider",
+                    "text": "View Details",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "Enc Chat",
+            "posterUrl": "./assets/enc_chat.png",
+            "altText": "enc chat",
+            "description": " Is a windows app made using C#, the project consist of 3 main parts; the server, the api and the client, the idea behind the app is to apply something a little bit different when it comes to socket apps which you might find similar to something like remote procedure call. The client first initates a request with the login credientals to the API (which is a minimal api that uses a sqlite database) then ...",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Encrypted-Chat-Client",
+                    "text": "View on Github",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "Simple Http Server on Android",
+            "posterUrl": "./assets/http server preview.jpeg",
+            "altText": "simple web server on android",
+            "description": "is a simple (outdated) android app that is created for educational purposes only and to get my hands dirty with how the http protocol works...",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Simple-Http-Server-Android",
+                    "text": "View on Github",
+                    "target": "_blank"
+                }
+            ]
+        },
+        {
+            "name": "My File Sender",
+            "posterUrl": "./assets/My-File-Sender.png",
+            "altText": "My File Sender via SFTP protocol",
+            "description": "My File Sender is a SFTP client that is based on SSH.Net lib...",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/My-File-Sender#my-file-sender-in-development",
+                    "text": "View on Github",
+                    "target": "_blank"
+                }
+            ]
+        }
+    ]
+}
