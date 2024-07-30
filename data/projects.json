@@ -2,20 +2,20 @@
     "projects": [
         {
             "name": "The Drawing App",
-            "posterUrl": "./assets/drawnig-app-logo.png",
+            "posterUrl": "./assets/drawnig-app-logo.webp",
             "altText": "The drawing app on play store",
             "description": "is a simple and easy to use drawing app for all ages",
             "links": [
                 {
                     "url": "https://play.google.com/store/apps/details?id=io.github.ahmedmagdy492.thedrawingapp",
-                    "img": "./assets/playstore.png",
+                    "img": "./assets/playstore.webp",
                     "target": "_blank"
                 }
             ]
         },
         {
             "name": "Basra Cards Game",
-            "posterUrl": "./imgs/basra-imgs/basra1.png",
+            "posterUrl": "./imgs/basra-imgs/basra1.webp",
             "altText": "basra cards game",
             "description": "is a simple cards game made with only C and Raylib",
             "links": [
@@ -27,7 +27,7 @@
         },
         {
             "name": "Connect 4",
-            "posterUrl": "./imgs/connect4.png",
+            "posterUrl": "./imgs/connect4.webp",
             "altText": "connect4 game",
             "description": "The classic Connect 4 game made with C++ and Raylib",
             "links": [
@@ -39,7 +39,7 @@
         },
         {
             "name": "Hack Assembler",
-            "posterUrl": "https://github.com/ahmedmagdy492/Simple-Hack-Assembler/raw/master/Hack%20app%20preview.png",
+            "posterUrl": "https://github.com/ahmedmagdy492/Simple-Hack-Assembler/raw/master/Hack%20app%20preview.webp",
             "altText": "Hack Assembler",
             "description": "A Simple Assembler for the hack machine language. this part of the from nand to tetris course",
             "links": [
@@ -51,7 +51,7 @@
         },
         {
             "name": "Snake",
-            "posterUrl": "assets/snake.png",
+            "posterUrl": "assets/snake.webp",
             "altText": "snake game",
             "description": "The well known old snake game is available on Windows and Linux",
             "links": [
@@ -75,7 +75,7 @@
         },
         {
             "name": "Turbo Download Manager",
-            "posterUrl": "/logo.png",
+            "posterUrl": "./imgs/logo.webp",
             "altText": "Turbo Download Manager",
             "description": "is a simple file downlaoder that is built using C# and Windows Forms, currently it supports the http protocol only and uses range requests to create multiple threads for faster downloading and to shorten downloading time.",
             "links": [
@@ -87,7 +87,7 @@
         },
         {
             "name": "Tic Tac Toe With Basic AI",
-            "posterUrl": "./assets/tic-tac-toe.png",
+            "posterUrl": "./assets/tic-tac-toe.webp",
             "altText": "Tic Tac Toe With Basic AI",
             "description": "Made with html, css and js used the Mini-Max algorthem to implement basic AI",
             "links": [
@@ -100,7 +100,7 @@
         },
         {
             "name": "Space Defeneder",
-            "posterUrl": "/assets/space_defender_img.png",
+            "posterUrl": "/assets/space_defender_img.webp",
             "altText": "Space Defeneder",
             "description": "A simple and small game made only with html, css and js without even using the canvas to draw",
             "links": [
@@ -113,7 +113,7 @@
         },
         {
             "name": "Pong",
-            "posterUrl": "imgs/pong.png",
+            "posterUrl": "imgs/pong.webp",
             "altText": "pong game",
             "description": "The classic pong game made with C++ and Raylib",
             "links": [
@@ -126,7 +126,7 @@
         },
         {
             "name": "Take Break",
-            "posterUrl": "/assets/take break.png",
+            "posterUrl": "/assets/take break.webp",
             "altText": "take break",
             "description": "A Windows Desktop app to organize your breaks made using C# and Windows Forms",
             "links": [
@@ -151,7 +151,7 @@
         },
         {
             "name": "Enc Chat",
-            "posterUrl": "./assets/enc_chat.png",
+            "posterUrl": "./assets/enc_chat.webp",
             "altText": "enc chat",
             "description": " Is a windows app made using C#, the project consist of 3 main parts; the server, the api and the client, the idea behind the app is to apply something a little bit different when it comes to socket apps which you might find similar to something like remote procedure call. The client first initates a request with the login credientals to the API (which is a minimal api that uses a sqlite database) then ...",
             "links": [
@@ -177,7 +177,7 @@
         },
         {
             "name": "My File Sender",
-            "posterUrl": "./assets/My-File-Sender.png",
+            "posterUrl": "./assets/My-File-Sender.webp",
             "altText": "My File Sender via SFTP protocol",
             "description": "My File Sender is a SFTP client that is based on SSH.Net lib...",
             "links": [
