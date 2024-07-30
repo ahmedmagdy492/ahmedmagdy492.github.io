@@ -27,7 +27,7 @@
         },
         {
             "name": "Connect 4",
-            "posterUrl": "./imgs/connect4.webp",
+            "posterUrl": "./assets/connect4.webp",
             "altText": "connect4 game",
             "description": "The classic Connect 4 game made with C++ and Raylib",
             "links": [
@@ -75,7 +75,7 @@
         },
         {
             "name": "Turbo Download Manager",
-            "posterUrl": "./imgs/logo.webp",
+            "posterUrl": "./assets/logo.webp",
             "altText": "Turbo Download Manager",
             "description": "is a simple file downlaoder that is built using C# and Windows Forms, currently it supports the http protocol only and uses range requests to create multiple threads for faster downloading and to shorten downloading time.",
             "links": [
@@ -113,7 +113,7 @@
         },
         {
             "name": "Pong",
-            "posterUrl": "imgs/pong.webp",
+            "posterUrl": "./assets/pong.webp",
             "altText": "pong game",
             "description": "The classic pong game made with C++ and Raylib",
             "links": [
@@ -126,7 +126,7 @@
         },
         {
             "name": "Take Break",
-            "posterUrl": "/assets/take break.webp",
+            "posterUrl": "/assets/take-break.webp",
             "altText": "take break",
             "description": "A Windows Desktop app to organize your breaks made using C# and Windows Forms",
             "links": [
@@ -164,7 +164,7 @@
         },
         {
             "name": "Simple Http Server on Android",
-            "posterUrl": "./assets/http server preview.jpeg",
+            "posterUrl": "./assets/http server preview.webp",
             "altText": "simple web server on android",
             "description": "is a simple (outdated) android app that is created for educational purposes only and to get my hands dirty with how the http protocol works...",
             "links": [
