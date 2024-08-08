@@ -14,6 +14,18 @@
             ]
         },
         {
+            "name": "Space Defender (Upgrade)",
+            "posterUrl": "https://i.ytimg.com/vi/k5UHY37cf-I/hqdefault.jpg?sqp=-oaymwE2CNACELwBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARh_IDMoRTAP&rs=AOn4CLCrLOCjLE05piio_0b-uKvkpqHQtg",
+            "altText": "Space Defender (Upgrade)",
+            "description": "Made using C++ and Open GL",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Space_Defender",
+                    "text": "View on Github"
+                }
+            ]
+        },
+        {
             "name": "Basra Cards Game",
             "posterUrl": "./assets/basra.webp",
             "altText": "basra cards game",
