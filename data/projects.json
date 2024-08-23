@@ -26,6 +26,18 @@
             ]
         },
         {
+            "name": "Flappy Bird Clone",
+            "posterUrl": "https://i.ytimg.com/vi/U0_eygq-a-4/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGA8gZShiMA8=&rs=AOn4CLCBY6J_QLnApX7OJBfDUn8exaN_qw",
+            "altText": "A clone of the original Flappy Bird game",
+            "description": "Made using C++ and Raylib",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Flappy_Birds",
+                    "text": "View on Github"
+                }
+            ]
+        },
+        {
             "name": "Basra Cards Game",
             "posterUrl": "./assets/basra.webp",
             "altText": "basra cards game",
