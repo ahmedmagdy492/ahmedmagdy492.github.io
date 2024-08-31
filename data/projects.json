@@ -38,6 +38,10 @@
                 {
                     "url": "https://github.com/ahmedmagdy492/Space_Defender",
                     "text": "View on Github"
+                },
+                {
+                    "url": "https://github.com/ahmedmagdy492/Space_Defender/releases/tag/v1",
+                    "text": "Downloads"
                 }
             ]
         },
