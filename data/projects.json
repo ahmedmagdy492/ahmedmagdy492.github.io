@@ -17,6 +17,22 @@
             ]
         },
         {
+            "name": "Astroids (Beta)",
+            "posterUrl": "https://raw.githubusercontent.com/ahmedmagdy492/Astroids/Beta0.01/Astroids.gif",
+            "altText": "A clone of the classic Astroids Game",
+            "description": "Made using C++ and Raylib",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Astroids/tree/Beta0.01?tab=readme-ov-file#astroids",
+                    "text": "Preview"
+                },
+                {
+                    "url": "https://github.com/ahmedmagdy492/Astroids/releases/download/Beta0.01/Astroids.Win.x64.Beta.zip",
+                    "text": "Download Now"
+                }
+            ]
+        },
+        {
             "name": "The Drawing App",
             "posterUrl": "./assets/drawnig-app-logo.webp",
             "altText": "The drawing app on play store",
