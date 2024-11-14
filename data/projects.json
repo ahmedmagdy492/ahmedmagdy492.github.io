@@ -1,5 +1,17 @@
 {
     "projects": [
+         {
+            "name": "mp4 to gif converter",
+            "posterUrl": "https://github.com/ahmedmagdy492/mp4-to-gif/mp4-to-gif.png",
+            "altText": "a simple linux command line utility that convert mp4 videos into animated gif",
+            "description": "Made using C++ and ffmpeg and libgif",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/mp4-to-gif",
+                    "text": "View on Github"
+                }
+            ]
+        },
         {
             "name": "Flappy Bird Clone",
             "posterUrl": "https://i.ytimg.com/vi/U0_eygq-a-4/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGA8gZShiMA8=&rs=AOn4CLCBY6J_QLnApX7OJBfDUn8exaN_qw",
