@@ -13,6 +13,22 @@
             ]
         },
         {
+            "name": "Falling Blocks",
+            "posterUrl": "https://i.ytimg.com/vi/rijrraYP1Ic/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBPnCgvHqstliX1NCOpgml-eM3XLQ",
+            "altText": "A Tetris Clone",
+            "description": "Made using C++ and Raylib",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Falling_Blocks?tab=readme-ov-file#failing-blocks",
+                    "text": "View on Github"
+                },
+                {
+                    "url": "https://www.youtube.com/watch?v=rijrraYP1Ic",
+                    "text": "YouTube Video"
+                }
+            ]
+        },
+        {
             "name": "Flappy Bird Clone",
             "posterUrl": "https://i.ytimg.com/vi/U0_eygq-a-4/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGA8gZShiMA8=&rs=AOn4CLCBY6J_QLnApX7OJBfDUn8exaN_qw",
             "altText": "A clone of the original Flappy Bird game",
