@@ -1,5 +1,21 @@
 {
     "projects": [
+        {
+            "name": "3d Maze Scene",
+            "posterUrl": "https://raw.githubusercontent.com/ahmedmagdy492/ahmedmagdy492.github.io/refs/heads/main/mp4-to-gif.png",
+            "altText": "a simple linux command line utility that convert mp4 videos into animated gif",
+            "description": "Made using C++, Modern Open GL and miniaudio",
+            "links": [
+                {
+                    "url": "https://github.com/ahmedmagdy492/Maze_Escaping?tab=readme-ov-file",
+                    "text": "View on Github"
+                },
+                {
+                    "url": "https://www.youtube.com/watch?v=JRB7b89bpu8",
+                    "text": "YouTube Video"
+                }
+            ]
+        },
          {
             "name": "mp4 to gif converter",
             "posterUrl": "https://raw.githubusercontent.com/ahmedmagdy492/ahmedmagdy492.github.io/refs/heads/main/mp4-to-gif.png",
