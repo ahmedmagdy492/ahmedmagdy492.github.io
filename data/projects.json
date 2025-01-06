@@ -2,8 +2,8 @@
     "projects": [
         {
             "name": "3d Maze Scene",
-            "posterUrl": "https://raw.githubusercontent.com/ahmedmagdy492/ahmedmagdy492.github.io/refs/heads/main/mp4-to-gif.png",
-            "altText": "a simple linux command line utility that convert mp4 videos into animated gif",
+            "posterUrl": "https://raw.githubusercontent.com/ahmedmagdy492/Maze_Escaping/refs/heads/master/3d%20Maze%20Scene.png",
+            "altText": "3d Maze Scene with C++ and Open GL",
             "description": "Made using C++, Modern Open GL and miniaudio",
             "links": [
                 {
@@ -109,7 +109,7 @@
             "name": "Basra Cards Game",
             "posterUrl": "./assets/basra.webp",
             "altText": "basra cards game",
-            "description": "is a simple cards game made with only C and Raylib",
+            "description": "is a simple cards game made with only C and Raylib (On https://itch.io/)",
             "links": [
                 {
                     "url": "Basra.html",
