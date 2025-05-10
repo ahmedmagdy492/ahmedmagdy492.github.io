@@ -20,7 +20,7 @@
             "name": "Snakes And Ladders",
             "posterUrl": "https://github.com/ahmedmagdy492/Snakes-And-Ladders/raw/master/sc1.png",
             "altText": "The classic board game with networking capabilities",
-            "description": "Made using C# and MonoGame",
+            "description": "Made using C# and MonoGame (Multiplayer over Network)",
             "links": [
                 {
                     "url": "https://github.com/ahmedmagdy492/Snakes-And-Ladders",
