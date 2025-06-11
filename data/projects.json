@@ -128,8 +128,8 @@
             "description": "is a simple cards game made with only C and Raylib (On https://itch.io/)",
             "links": [
                 {
-                    "url": "Basra.html",
-                    "text": "View Details"
+                    "url": "https://github.com/ahmedmagdy492/Basra-Cards-Game/",
+                    "text": "View on Github"
                 }
             ]
         },
@@ -140,8 +140,8 @@
             "description": "The classic Connect 4 game made with C++ and Raylib",
             "links": [
                 {
-                    "url": "./connect4.html",
-                    "text": "View Details"
+                    "url": "https://github.com/ahmedmagdy492/connect-4",
+                    "text": "View on Github"
                 }
             ]
         },
@@ -164,8 +164,8 @@
             "description": "The well known old snake game is available on Windows and Linux",
             "links": [
                 {
-                    "url": "snake.html",
-                    "text": "View Details"
+                    "url": "https://github.com/ahmedmagdy492/snake",
+                    "text": "View on Github"
                 }
             ]
         },
@@ -188,8 +188,8 @@
             "description": "is a simple file downlaoder that is built using C# and Windows Forms, currently it supports the http protocol only and uses range requests to create multiple threads for faster downloading and to shorten downloading time.",
             "links": [
                 {
-                    "url": "Turbo Download Manager.html",
-                    "text": "View Details"
+                    "url": "https://github.com/ahmedmagdy492/turbo-download-manager",
+                    "text": "View on Github"
                 }
             ]
         },
@@ -227,7 +227,7 @@
             "links": [
                 {
                     "url": "https://github.com/ahmedmagdy492/Pong/releases/tag/v1",
-                    "text": "View Details",
+                    "text": "View on Github",
                     "target": "_blank"
                 }
             ]
@@ -239,8 +239,8 @@
             "description": "A Windows Desktop app to organize your breaks made using C# and Windows Forms",
             "links": [
                 {
-                    "url": "./Take-break.html",
-                    "text": "View Details"
+                    "url": "https://github.com/ahmedmagdy492/Take-Break-2",
+                    "text": "View on Github"
                 }
             ]
         },
@@ -252,7 +252,7 @@
             "links": [
                 {
                     "url": "https://github.com/ahmedmagdy492/The-Hanging-Spider",
-                    "text": "View Details",
+                    "text": "View on Github",
                     "target": "_blank"
                 }
             ]
