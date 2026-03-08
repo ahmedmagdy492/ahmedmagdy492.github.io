@@ -1,6 +1,22 @@
 {
     "projects": [
         {
+            "name": "Tiny Game Engine",
+            "posterUrl": "https://img.itch.zone/aW1nLzI1NzcxMDg1LnBuZw==/original/PPDWA%2B.png",
+            "altText": "Tiny Game Engine",
+            "description": "3D rendering capabilities using Modern OpenGL (version 3.3), Integerated with Nvidia physx physics engine, Integerated with OpenAL audio engine to handle both 2d and 3d audio, Basic input handling for keyboard and mouse, Basic Scene management system, Entity-Component-System (ECS) architecture, 3d model loading and rendering using Assimp, Scenes are saved and loaded using JSON format for easy editing using johnmc's JSON for Modern C++ library",
+            "links": [
+                {
+                    "url": "https://ahmedmagdy492.itch.io/tiny-game-engine",
+                    "text": "View on Itch.IO"
+                },
+                {
+                    "url": "https://youtu.be/GFX4HiSEqbw?si=CmKZm8Sem9M7czwA",
+                    "text": "YouTube Video"
+                }
+            ]
+        },
+        {
             "name": "3d Maze Scene",
             "posterUrl": "https://raw.githubusercontent.com/ahmedmagdy492/Maze_Escaping/refs/heads/master/3d%20Maze%20Scene.png",
             "altText": "3d Maze Scene with C++ and Open GL",
