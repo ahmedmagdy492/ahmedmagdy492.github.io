@@ -440,11 +440,13 @@
     .project-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 36px 32px;
+      padding: 0;
       position: relative;
       overflow: hidden;
       transition: border-color 0.25s, transform 0.25s;
       cursor: none;
+      display: flex;
+      flex-direction: column;
     }
     .project-card::before {
       content: '';
@@ -453,6 +455,8 @@
       background: linear-gradient(135deg, rgba(0,229,255,0.04), transparent);
       opacity: 0;
       transition: opacity 0.3s;
+      z-index: 1;
+      pointer-events: none;
     }
     .project-card:hover {
       border-color: var(--accent);
@@ -461,60 +465,98 @@
     .project-card:hover::before { opacity: 1; }
     .project-card.hidden { display: none; }
 
-    .project-icon {
-      font-size: 28px;
-      margin-bottom: 20px;
+    .project-poster {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
       display: block;
+      background: var(--surface2);
+      filter: brightness(0.85) saturate(0.9);
+      transition: filter 0.3s;
+    }
+    .project-card:hover .project-poster {
+      filter: brightness(1) saturate(1.1);
+    }
+    .project-poster-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+
+    .project-body {
+      padding: 24px 24px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     .project-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--text-bright);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: -0.02em;
     }
     .project-desc {
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.65;
       color: var(--text-dim);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
+      flex: 1;
+      /* clamp long descriptions */
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
-    .project-tags {
+    .project-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-    .project-tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      padding: 4px 10px;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      letter-spacing: 0.08em;
+      gap: 10px;
+      margin-top: auto;
     }
     .project-link {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 10px;
       color: var(--accent);
       text-decoration: none;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: gap 0.2s;
+      gap: 6px;
+      border: 1px solid rgba(0,229,255,0.25);
+      padding: 6px 12px;
+      transition: background 0.2s, border-color 0.2s;
     }
-    .project-link:hover { gap: 14px; }
+    .project-link:hover {
+      background: rgba(0,229,255,0.08);
+      border-color: var(--accent);
+    }
     .project-link::after { content: '→'; }
+    .project-link-alt {
+      color: var(--text-dim);
+      border-color: var(--border);
+    }
+    .project-link-alt:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(0,229,255,0.05);
+    }
 
     .project-num {
       position: absolute;
-      top: 20px;
-      right: 24px;
+      top: 12px;
+      right: 14px;
       font-family: var(--mono);
-      font-size: 11px;
-      color: var(--border);
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      background: rgba(3,5,8,0.7);
+      padding: 3px 8px;
+      z-index: 2;
     }
 
     /* ABOUT / STATS */
@@ -814,26 +856,38 @@
       });
     }, { threshold: 0.2 });
 
-    // LOAD DATA
-    fetch('./data.json')
-      .then(r => r.json())
-      .then(data => {
-        renderHero(data.profile);
-        renderSkills(data.skills);
-        renderProjects(data.projects);
-        renderAbout(data.profile, data.projects);
-        renderFooter(data.profile);
-      })
-      .catch(err => console.error('Failed to load data.json:', err));
+    // LOAD DATA — projects fetched from GitHub repo
+    const PROJECTS_URL = 'https://raw.githubusercontent.com/ahmedmagdy492/ahmedmagdy492.github.io/refs/heads/main/data/projects.json';
 
-    function renderHero(p) {
-      document.getElementById('hero-bio').textContent = p.bio;
-      document.getElementById('hero-socials').innerHTML = Object.entries(p.socials)
-        .map(([k, v]) => `<a href="${v}" target="_blank">${k.charAt(0).toUpperCase() + k.slice(1)}</a>`)
-        .join('');
+    fetch(PROJECTS_URL)
+      .then(r => { if (!r.ok) throw new Error('Network response was not ok'); return r.json(); })
+      .then(data => {
+        renderHero();
+        renderSkills();
+        renderProjects(data.projects);
+        renderAbout(data.projects);
+      })
+      .catch(err => {
+        console.error('Failed to load projects:', err);
+        document.getElementById('projects-grid').innerHTML =
+          `<div class="loading">Failed to load projects. Please try again later.</div>`;
+      });
+
+    function renderHero() {
+      // Hero content is static — already in HTML, nothing dynamic needed
     }
 
-    function renderSkills(skills) {
+    function renderSkills() {
+      const skills = [
+        { name: 'C++', level: 92 },
+        { name: 'C', level: 88 },
+        { name: 'C#/.NET', level: 87 },
+        { name: 'OpenGL', level: 82 },
+        { name: 'Game Dev (Raylib)', level: 85 },
+        { name: 'Flutter / Dart', level: 70 },
+        { name: 'JavaScript', level: 68 },
+        { name: 'Python', level: 65 },
+      ];
       const grid = document.getElementById('skills-grid');
       grid.innerHTML = skills.map(s => `
         <div class="skill-item">
@@ -853,45 +907,53 @@
       const grid = document.getElementById('projects-grid');
       const filterBar = document.getElementById('filter-bar');
 
-      const categories = ['all', ...new Set(projects.map(p => p.category))];
-      filterBar.innerHTML = categories.map((cat, i) =>
-        `<button class="filter-btn ${i === 0 ? 'active' : ''}" data-filter="${cat}">${cat}</button>`
-      ).join('');
+      // Remove the loading state filter btn and keep just "All"
+      filterBar.innerHTML = `<button class="filter-btn active" data-filter="all">All (${projects.length})</button>`;
 
       filterBar.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-          const filter = btn.dataset.filter;
-          grid.querySelectorAll('.project-card').forEach(card => {
-            card.classList.toggle('hidden', filter !== 'all' && card.dataset.category !== filter);
-          });
         });
       });
 
-      grid.innerHTML = projects.map((p, i) => `
-        <div class="project-card" data-category="${p.category}">
+      grid.innerHTML = projects.map((p, i) => {
+        // Resolve poster: skip relative paths (start with ./ or assets/) since we're not on the same origin
+        const isAbsolutePoster = p.posterUrl && (p.posterUrl.startsWith('http://') || p.posterUrl.startsWith('https://'));
+        const posterHTML = isAbsolutePoster
+          ? `<img class="project-poster" src="${p.posterUrl}" alt="${p.altText || p.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+             <div class="project-poster-placeholder" style="display:none">🎮</div>`
+          : `<div class="project-poster-placeholder">🎮</div>`;
+
+        // Build links — first link is primary (accent), rest are secondary
+        const linksHTML = p.links.map((link, li) => {
+          if (link.img) return ''; // skip Play Store image links for now
+          const cls = li === 0 ? 'project-link' : 'project-link project-link-alt';
+          return `<a href="${link.url}" target="${link.target || '_blank'}" class="${cls}">${link.text}</a>`;
+        }).filter(Boolean).join('');
+
+        return `
+        <div class="project-card">
           <span class="project-num">${String(i + 1).padStart(2, '0')}</span>
-          <span class="project-icon">${p.icon}</span>
-          <h3 class="project-title">${p.title}</h3>
-          <p class="project-desc">${p.description}</p>
-          <div class="project-tags">
-            ${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
+          ${posterHTML}
+          <div class="project-body">
+            <h3 class="project-title">${p.name}</h3>
+            <p class="project-desc">${p.description}</p>
+            <div class="project-links">${linksHTML}</div>
           </div>
-          <a href="${p.url}" target="_blank" class="project-link">View on GitHub</a>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
 
       // Re-attach cursor events for new elements
-      grid.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('mouseenter', () => { cursor.style.width = '6px'; cursor.style.height = '6px'; ring.style.width = '52px'; ring.style.height = '52px'; });
-        card.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; });
+      grid.querySelectorAll('.project-card, .project-link').forEach(el => {
+        el.addEventListener('mouseenter', () => { cursor.style.width = '6px'; cursor.style.height = '6px'; ring.style.width = '52px'; ring.style.height = '52px'; });
+        el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; });
       });
     }
 
-    function renderAbout(profile, projects) {
+    function renderAbout(projects) {
       document.getElementById('about-bio').innerHTML =
-        `I'm <strong>Ahmed Magdy</strong> — a <strong>${profile.title}</strong>. ${profile.bio}`;
+        `I'm <strong>Ahmed Magdy</strong> — a <strong>Software Developer, Hacker & Game Developer</strong>. I build things at the intersection of systems programming, game development, and low-level engineering.`;
 
       document.getElementById('stats-grid').innerHTML = `
         <div class="stat-box">
@@ -900,23 +962,17 @@
         </div>
         <div class="stat-box">
           <div class="stat-num">3+</div>
-          <div class="stat-label">Years Hacking</div>
+          <div class="stat-label">Languages Mastered</div>
         </div>
         <div class="stat-box">
-          <div class="stat-num">4</div>
-          <div class="stat-label">Core Languages</div>
+          <div class="stat-num">C++</div>
+          <div class="stat-label">Primary Language</div>
         </div>
         <div class="stat-box">
           <div class="stat-num">∞</div>
           <div class="stat-label">Curiosity Level</div>
         </div>
       `;
-    }
-
-    function renderFooter(profile) {
-      document.getElementById('footer-name').innerHTML =
-        `${profile.name} · <span class="footer-accent">Developer & Hacker</span>`;
-      document.title = `${profile.name} — Developer`;
     }
 
     // TYPEWRITER for hero label
