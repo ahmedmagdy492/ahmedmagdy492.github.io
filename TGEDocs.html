@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engine Docs — JSON Level Format</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e28;
+    --border: #252a38;
+    --accent: #e8a44a;
+    --accent2: #5b8dee;
+    --accent3: #6ee7b7;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --muted2: #94a3b8;
+    --string: #6ee7b7;
+    --number: #fb923c;
+    --boolean: #a78bfa;
+    --key: #7dd3fc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* LAYOUT */
+  .shell {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .logo h1 span { color: var(--accent); }
+
+  .nav-section {
+    padding: 20px 0 8px;
+  }
+
+  .nav-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 24px;
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 8px 24px;
+    font-size: 13px;
+    color: var(--muted2);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(232,164,74,0.06); }
+
+  .nav-item .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    background: var(--surface2);
+    color: var(--muted);
+    padding: 2px 6px;
+    border-radius: 3px;
+    float: right;
+    margin-top: 1px;
+  }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    padding: 0;
+    max-width: 900px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 60px 56px 48px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '{ }';
+    position: absolute;
+    right: 40px;
+    top: 30px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 120px;
+    font-weight: 600;
+    color: var(--border);
+    opacity: 0.5;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .hero h2 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--muted2);
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  .version-pill {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(91,141,238,0.12);
+    color: var(--accent2);
+    border: 1px solid rgba(91,141,238,0.25);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 48px 56px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  .section h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 600px;
+  }
+
+  /* FIELD TABLE */
+  .field-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+
+  .field-table thead tr {
+    background: var(--surface2);
+  }
+
+  .field-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .field-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(37,42,56,0.6);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .field-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .field-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--key);
+  }
+
+  .field-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .t-string  { background: rgba(110,231,183,0.1); color: var(--string); }
+  .t-number  { background: rgba(251,146,60,0.1);  color: var(--number); }
+  .t-boolean { background: rgba(167,139,250,0.1); color: var(--purple); }
+  .t-array   { background: rgba(91,141,238,0.1);  color: var(--accent2); }
+  .t-object  { background: rgba(232,164,74,0.1);  color: var(--accent); }
+  .t-null    { background: rgba(100,116,139,0.1); color: var(--muted2); }
+
+  .field-req {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+  .req-yes { color: var(--accent); }
+  .req-no  { color: var(--muted); }
+
+  .field-desc { color: var(--muted2); font-size: 13px; }
+
+  .field-default {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted2);
+    letter-spacing: 0.05em;
+  }
+
+  .copy-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .k  { color: var(--key); }
+  .s  { color: var(--string); }
+  .n  { color: var(--number); }
+  .b  { color: var(--purple); }
+  .c  { color: var(--muted); font-style: italic; }
+  .p  { color: var(--muted2); }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 3px solid;
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .callout-info    { border-color: var(--accent2); background: rgba(91,141,238,0.07); color: var(--muted2); }
+  .callout-warning { border-color: var(--accent);  background: rgba(232,164,74,0.07); color: var(--muted2); }
+  .callout-tip     { border-color: var(--accent3); background: rgba(110,231,183,0.07); color: var(--muted2); }
+
+  .callout strong { color: var(--text); }
+
+  /* INLINE CODE */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--surface2);
+    color: var(--key);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* TYPE LEGEND */
+  .type-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  /* OBJECT TYPES */
+  .type-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .type-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: border-color 0.15s;
+  }
+
+  .type-card:hover { border-color: var(--accent); }
+
+  .type-card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .type-card-desc {
+    font-size: 12px;
+    color: var(--muted2);
+    line-height: 1.5;
+  }
+
+  /* SHADER TAGS */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin: 2px;
+  }
+
+  /* ANCHOR OFFSET FOR STICKY NAV */
+  .anchor { scroll-margin-top: 24px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="logo">
+      <div class="logo-tag">// level format</div>
+      <h1>Engine <span>Docs</span></h1>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <a class="nav-item active" onclick="scrollTo('overview')">Introduction</a>
+      <a class="nav-item" onclick="scrollTo('root')">Root Structure</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Sections</div>
+      <a class="nav-item" onclick="scrollTo('player')">player <span class="badge">obj</span></a>
+      <a class="nav-item" onclick="scrollTo('objects')">objects <span class="badge">arr</span></a>
+      <a class="nav-item" onclick="scrollTo('lights')">lights <span class="badge">arr</span></a>
+      <a class="nav-item" onclick="scrollTo('skybox')">skybox <span class="badge">obj</span></a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Reference</div>
+      <a class="nav-item" onclick="scrollTo('shaders')">Shaders</a>
+      <a class="nav-item" onclick="scrollTo('light-types')">Light Types</a>
+      <a class="nav-item" onclick="scrollTo('full-example')">Full Example</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero" id="overview">
+      <div class="hero-eyebrow">// documentation v1.0</div>
+      <div class="version-pill">format: 1.0</div>
+      <h2>Level JSON<br>Format</h2>
+      <p>Complete reference for authoring level files. Every level is a single <code>.json</code> file describing the player, objects, lighting, and skybox.</p>
+    </div>
+
+    <!-- ROOT STRUCTURE -->
+    <div class="section anchor" id="root">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h3>Root Structure</h3>
+      </div>
+      <p class="section-desc">The top-level object contains metadata and four main sections. All fields are required unless marked optional.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr>
+            <th>Field</th><th>Type</th><th>Req</th><th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="field-name">levelName</td>
+            <td><span class="field-type t-string">string</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">Display name of the level shown in menus.</td>
+          </tr>
+          <tr>
+            <td class="field-name">levelNo</td>
+            <td><span class="field-type t-number">number</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">Integer index. Used for level ordering and save data.</td>
+          </tr>
+          <tr>
+            <td class="field-name">version</td>
+            <td><span class="field-type t-string">string</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">Format version string. Always <code>"1.0"</code>.</td>
+          </tr>
+          <tr>
+            <td class="field-name">texelsPerUnit</td>
+            <td><span class="field-type t-number">number</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">Texture scale multiplier applied globally. <code>1.0</code> is default.</td>
+          </tr>
+          <tr>
+            <td class="field-name">player</td>
+            <td><span class="field-type t-object">object</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">Player configuration. See <a onclick="scrollTo('player')" style="color:var(--accent);cursor:pointer">player</a> section.</td>
+          </tr>
+          <tr>
+            <td class="field-name">objects</td>
+            <td><span class="field-type t-array">array</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">All scene objects. See <a onclick="scrollTo('objects')" style="color:var(--accent);cursor:pointer">objects</a> section.</td>
+          </tr>
+          <tr>
+            <td class="field-name">lights</td>
+            <td><span class="field-type t-array">array</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">All light sources. See <a onclick="scrollTo('lights')" style="color:var(--accent);cursor:pointer">lights</a> section.</td>
+          </tr>
+          <tr>
+            <td class="field-name">skybox</td>
+            <td><span class="field-type t-object">object</span></td>
+            <td class="field-req req-yes">yes</td>
+            <td class="field-desc">Six skybox face image paths. See <a onclick="scrollTo('skybox')" style="color:var(--accent);cursor:pointer">skybox</a> section.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PLAYER -->
+    <div class="section anchor" id="player">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h3>player</h3>
+      </div>
+      <p class="section-desc">Defines the first-person player: camera settings, spawn position, physics, and audio.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Req</th><th>Description / Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="field-name">img</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Path to the player diffuse texture.</td></tr>
+          <tr><td class="field-name">img_spec</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Path to specular map. Can be same as <code>img</code>.</td></tr>
+          <tr><td class="field-name">shader</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Shader name. Use <code>"pointLightShader"</code> for point-lit scenes.</td></tr>
+          <tr><td class="field-name">moveSpeed</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Units per second. Typical range: <code>2.0</code>–<code>5.0</code>.</td></tr>
+          <tr><td class="field-name">position</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-yes">yes</td><td class="field-desc"><code>[x, y, z]</code> world spawn position.</td></tr>
+          <tr><td class="field-name">scale</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Player collision box scale. X is typically <code>0.0</code> (no model shown).</td></tr>
+          <tr><td class="field-name">yaw</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Initial horizontal look angle in degrees.</td></tr>
+          <tr><td class="field-name">pitch</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Initial vertical look angle in degrees.</td></tr>
+          <tr><td class="field-name">height</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Camera eye height above the player's base position.</td></tr>
+          <tr><td class="field-name">fov</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Vertical field of view in degrees. Typical: <code>45.0</code>–<code>90.0</code>.</td></tr>
+          <tr><td class="field-name">farPlane</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Camera far clip distance. Increase for larger levels.</td></tr>
+          <tr><td class="field-name">nearPlane</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Camera near clip distance. Keep at <code>0.1</code>.</td></tr>
+          <tr><td class="field-name">verticalForce</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Jump impulse strength. Higher = bigger jump. Typical: <code>5.0</code>–<code>8.0</code>.</td></tr>
+          <tr><td class="field-name">isUnderWater</td><td><span class="field-type t-boolean">boolean</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Enables underwater post-processing effect on spawn.</td></tr>
+          <tr><td class="field-name">walk</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Path to footstep audio file.</td></tr>
+          <tr><td class="field-name">jmp</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Path to jump sound effect.</td></tr>
+          <tr><td class="field-name">children</td><td><span class="field-type t-array">array</span></td><td class="field-req req-no">opt</td><td class="field-desc">Child objects attached to the player. Usually empty <code>[]</code>.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">player — example</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">"player"</span>: <span class="p">{</span>
+  <span class="k">"img"</span><span class="p">:</span>           <span class="s">"Assets\\Images\\lv1\\player.png"</span><span class="p">,</span>
+  <span class="k">"img_spec"</span><span class="p">:</span>      <span class="s">"Assets\\Images\\lv1\\player.png"</span><span class="p">,</span>
+  <span class="k">"shader"</span><span class="p">:</span>        <span class="s">"pointLightShader"</span><span class="p">,</span>
+  <span class="k">"moveSpeed"</span><span class="p">:</span>     <span class="n">3.5</span><span class="p">,</span>
+  <span class="k">"position"</span><span class="p">:</span>     <span class="p">[</span> <span class="n">-2.0</span><span class="p">,</span> <span class="n">4.0</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+  <span class="k">"scale"</span><span class="p">:</span>         <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.5</span> <span class="p">],</span>
+  <span class="k">"yaw"</span><span class="p">:</span>           <span class="n">0.0</span><span class="p">,</span>
+  <span class="k">"pitch"</span><span class="p">:</span>         <span class="n">0.0</span><span class="p">,</span>
+  <span class="k">"height"</span><span class="p">:</span>        <span class="n">1.4</span><span class="p">,</span>
+  <span class="k">"fov"</span><span class="p">:</span>           <span class="n">45.0</span><span class="p">,</span>
+  <span class="k">"farPlane"</span><span class="p">:</span>      <span class="n">100.0</span><span class="p">,</span>
+  <span class="k">"nearPlane"</span><span class="p">:</span>     <span class="n">0.1</span><span class="p">,</span>
+  <span class="k">"verticalForce"</span><span class="p">:</span> <span class="n">5.0</span><span class="p">,</span>
+  <span class="k">"isUnderWater"</span><span class="p">:</span>  <span class="b">false</span><span class="p">,</span>
+  <span class="k">"walk"</span><span class="p">:</span>          <span class="s">"Assets\\Audio\\walk.wav"</span><span class="p">,</span>
+  <span class="k">"jmp"</span><span class="p">:</span>           <span class="s">"Assets\\Audio\\jmp.wav"</span><span class="p">,</span>
+  <span class="k">"children"</span><span class="p">:</span>      <span class="p">[]</span>
+<span class="p">}</span></pre>
+      </div>
+    </div>
+
+    <!-- OBJECTS -->
+    <div class="section anchor" id="objects">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h3>objects</h3>
+      </div>
+      <p class="section-desc">An array of scene objects. Each object is a platform, wall, prop, or decoration placed in world space.</p>
+
+      <div class="callout callout-info">
+        <strong>Object types</strong> — currently the engine supports the following <code>type</code> values:
+      </div>
+
+      <div class="type-cards">
+        <div class="type-card">
+          <div class="type-card-name">"static_platform"</div>
+          <div class="type-card-desc">A solid collidable surface. Used for floors, walls, ceilings, ramps, and cover boxes. Most common type.</div>
+        </div>
+        <div class="type-card">
+          <div class="type-card-name">"model"</div>
+          <div class="type-card-desc">A 3D OBJ mesh loaded from disk. Uses <code>model</code> path instead of <code>img</code>. Suited for complex geometry.</div>
+        </div>
+      </div>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Req</th><th>Description / Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="field-name">id</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Unique integer ID per object. Must not repeat within a level.</td></tr>
+          <tr><td class="field-name">type</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc"><code>"static_platform"</code> or <code>"model"</code>.</td></tr>
+          <tr><td class="field-name">img</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes*</td><td class="field-desc">Diffuse texture path. Required for <code>static_platform</code>. Omit for <code>model</code> type.</td></tr>
+          <tr><td class="field-name">img_spec</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes*</td><td class="field-desc">Specular map path. Usually same as <code>img</code>.</td></tr>
+          <tr><td class="field-name">model</td><td><span class="field-type t-string">string</span></td><td class="field-req req-no">*</td><td class="field-desc">Path to <code>.obj</code> file. Only used when <code>type</code> is <code>"model"</code>.</td></tr>
+          <tr><td class="field-name">shininess</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Specular highlight sharpness. <code>0</code> = matte, <code>128</code> = mirror-like. Typical: <code>8</code>–<code>32</code>.</td></tr>
+          <tr><td class="field-name">noOfRepeationX</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Texture tile count on the X axis. Higher = smaller tiles.</td></tr>
+          <tr><td class="field-name">noOfRepeationY</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Texture tile count on the Y axis.</td></tr>
+          <tr><td class="field-name">hasAudio</td><td><span class="field-type t-boolean">boolean</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Whether this object emits audio.</td></tr>
+          <tr><td class="field-name">shader</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Shader program name. See <a onclick="scrollTo('shaders')" style="color:var(--accent);cursor:pointer">Shaders</a> reference.</td></tr>
+          <tr><td class="field-name">audio</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Audio file path. Used when <code>hasAudio</code> is <code>true</code>. Otherwise ignored (still required as empty string or dummy path).</td></tr>
+          <tr><td class="field-name">is3dAudio</td><td><span class="field-type t-boolean">boolean</span></td><td class="field-req req-yes">yes</td><td class="field-desc">If <code>true</code>, audio attenuates with distance from the player.</td></tr>
+          <tr><td class="field-name">position</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-yes">yes</td><td class="field-desc"><code>[x, y, z]</code> world position of the object's center.</td></tr>
+          <tr><td class="field-name">rotationAngle</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Rotation in degrees around <code>rotationAxis</code>.</td></tr>
+          <tr><td class="field-name">rotationAxis</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Normalized axis vector for rotation. <code>[0,1,0]</code> = rotate around Y (yaw). <code>[0,0,1]</code> = roll (for ramps).</td></tr>
+          <tr><td class="field-name">scale</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-yes">yes</td><td class="field-desc"><code>[x, y, z]</code> size in world units. A floor might be <code>[10, 0.1, 10]</code>, a wall <code>[0.1, 5, 10]</code>.</td></tr>
+          <tr><td class="field-name">dynamicFriction</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Friction coefficient. <code>0</code> = ice, <code>1</code> = sticky. Typical: <code>0.6</code>–<code>0.8</code>.</td></tr>
+          <tr><td class="field-name">bounceness</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Restitution / bounciness. <code>0</code> = no bounce, <code>1</code> = full elastic.</td></tr>
+          <tr><td class="field-name">mass</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Physics mass in kg. High mass = harder to push. <code>1000</code>+ for immovable terrain.</td></tr>
+          <tr><td class="field-name">isStatic</td><td><span class="field-type t-boolean">boolean</span></td><td class="field-req req-yes">yes</td><td class="field-desc">If <code>true</code>, excluded from physics simulation entirely (zero cost). If <code>false</code>, participates in physics.</td></tr>
+          <tr><td class="field-name">isMovable</td><td><span class="field-type t-boolean">boolean</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Whether the object can be moved by forces or player interaction.</td></tr>
+          <tr><td class="field-name">meshEnabled</td><td><span class="field-type t-boolean">boolean</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Toggles the collision mesh. Disable for thin planes that don't need collision (e.g. carpet overlays).</td></tr>
+          <tr><td class="field-name">movable</td><td><span class="field-type t-null">null / object</span></td><td class="field-req req-no">opt</td><td class="field-desc">Movable behaviour config. Set to <code>null</code> when unused.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-warning">
+        <strong>Rotation tip:</strong> For ramps, use <code>rotationAxis: [0, 0, 1]</code> with a small <code>rotationAngle</code> like <code>10</code>–<code>20</code>. For walls rotated in the horizontal plane, use <code>[0, 1, 0]</code> with <code>90</code>.
+      </div>
+
+      <div class="callout callout-tip">
+        <strong>meshEnabled vs isStatic:</strong> Use <code>meshEnabled: false</code> for decorative overlays like carpets placed on top of floors. Use <code>isStatic: false</code> to let the physics engine track the object (required even for non-moving objects in most setups).
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">object — static_platform floor</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">{</span>
+  <span class="k">"id"</span><span class="p">:</span>             <span class="n">1</span><span class="p">,</span>
+  <span class="k">"type"</span><span class="p">:</span>           <span class="s">"static_platform"</span><span class="p">,</span>
+  <span class="k">"img"</span><span class="p">:</span>            <span class="s">"Assets\\Images\\lv1\\ground.png"</span><span class="p">,</span>
+  <span class="k">"img_spec"</span><span class="p">:</span>       <span class="s">"Assets\\Images\\lv1\\ground.png"</span><span class="p">,</span>
+  <span class="k">"shininess"</span><span class="p">:</span>      <span class="n">16.0</span><span class="p">,</span>
+  <span class="k">"noOfRepeationX"</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span>
+  <span class="k">"noOfRepeationY"</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span>
+  <span class="k">"hasAudio"</span><span class="p">:</span>       <span class="b">false</span><span class="p">,</span>
+  <span class="k">"shader"</span><span class="p">:</span>         <span class="s">"pointLightShader"</span><span class="p">,</span>
+  <span class="k">"audio"</span><span class="p">:</span>          <span class="s">"Assets\\Audio\\lv1\\bg.wav"</span><span class="p">,</span>
+  <span class="k">"is3dAudio"</span><span class="p">:</span>      <span class="b">false</span><span class="p">,</span>
+  <span class="k">"position"</span><span class="p">:</span>       <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+  <span class="k">"rotationAngle"</span><span class="p">:</span>  <span class="n">0.0</span><span class="p">,</span>
+  <span class="k">"rotationAxis"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+  <span class="k">"scale"</span><span class="p">:</span>          <span class="p">[</span> <span class="n">10.0</span><span class="p">,</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">10.0</span> <span class="p">],</span>
+  <span class="k">"dynamicFriction"</span><span class="p">:</span> <span class="n">0.8</span><span class="p">,</span>
+  <span class="k">"bounceness"</span><span class="p">:</span>     <span class="n">0.0</span><span class="p">,</span>
+  <span class="k">"mass"</span><span class="p">:</span>           <span class="n">1000.0</span><span class="p">,</span>
+  <span class="k">"isStatic"</span><span class="p">:</span>       <span class="b">false</span><span class="p">,</span>
+  <span class="k">"isMovable"</span><span class="p">:</span>      <span class="b">false</span><span class="p">,</span>
+  <span class="k">"meshEnabled"</span><span class="p">:</span>    <span class="b">true</span><span class="p">,</span>
+  <span class="k">"movable"</span><span class="p">:</span>        <span class="b">null</span>
+<span class="p">}</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">object — wall (rotated 90° on Y)</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">{</span>
+  <span class="k">"id"</span><span class="p">:</span>             <span class="n">2</span><span class="p">,</span>
+  <span class="k">"type"</span><span class="p">:</span>           <span class="s">"static_platform"</span><span class="p">,</span>
+  <span class="k">"img"</span><span class="p">:</span>            <span class="s">"Assets\\Images\\lv1\\wall.png"</span><span class="p">,</span>
+  <span class="k">"img_spec"</span><span class="p">:</span>       <span class="s">"Assets\\Images\\lv1\\wall.png"</span><span class="p">,</span>
+  <span class="k">"shininess"</span><span class="p">:</span>      <span class="n">8.0</span><span class="p">,</span>
+  <span class="k">"noOfRepeationX"</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span>
+  <span class="k">"noOfRepeationY"</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span>
+  <span class="k">"hasAudio"</span><span class="p">:</span>       <span class="b">false</span><span class="p">,</span>
+  <span class="k">"shader"</span><span class="p">:</span>         <span class="s">"pointLightShader"</span><span class="p">,</span>
+  <span class="k">"audio"</span><span class="p">:</span>          <span class="s">"Assets\\Audio\\lv999.wav"</span><span class="p">,</span>
+  <span class="k">"is3dAudio"</span><span class="p">:</span>      <span class="b">false</span><span class="p">,</span>
+  <span class="k">"position"</span><span class="p">:</span>       <span class="p">[</span> <span class="n">10.0</span><span class="p">,</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+  <span class="k">"rotationAngle"</span><span class="p">:</span>  <span class="n">90.0</span><span class="p">,</span>   <span class="c">// rotate 90° around Y to face Z-axis</span>
+  <span class="k">"rotationAxis"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+  <span class="k">"scale"</span><span class="p">:</span>          <span class="p">[</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">5.0</span><span class="p">,</span> <span class="n">10.0</span> <span class="p">],</span>
+  <span class="k">"dynamicFriction"</span><span class="p">:</span> <span class="n">0.8</span><span class="p">,</span>
+  <span class="k">"bounceness"</span><span class="p">:</span>     <span class="n">0.0</span><span class="p">,</span>
+  <span class="k">"mass"</span><span class="p">:</span>           <span class="n">1000.0</span><span class="p">,</span>
+  <span class="k">"isStatic"</span><span class="p">:</span>       <span class="b">false</span><span class="p">,</span>
+  <span class="k">"isMovable"</span><span class="p">:</span>      <span class="b">false</span><span class="p">,</span>
+  <span class="k">"meshEnabled"</span><span class="p">:</span>    <span class="b">true</span><span class="p">,</span>
+  <span class="k">"movable"</span><span class="p">:</span>        <span class="b">null</span>
+<span class="p">}</span></pre>
+      </div>
+    </div>
+
+    <!-- LIGHTS -->
+    <div class="section anchor" id="lights">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h3>lights</h3>
+      </div>
+      <p class="section-desc">An array of light sources. Multiple lights are supported. Each light has a type, color, position or direction, and Phong shading parameters.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Req</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="field-name">type</td><td><span class="field-type t-string">string</span></td><td class="field-req req-yes">yes</td><td class="field-desc"><code>"point"</code> or <code>"directional"</code>. See <a onclick="scrollTo('light-types')" style="color:var(--accent);cursor:pointer">Light Types</a>.</td></tr>
+          <tr><td class="field-name">color</td><td><span class="field-type t-array">array[4]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">RGBA light color tint. <code>[1,1,1,1]</code> = white. Values 0–1.</td></tr>
+          <tr><td class="field-name">position</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-no">*</td><td class="field-desc">World position. Required for <code>point</code> lights.</td></tr>
+          <tr><td class="field-name">direction</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-no">*</td><td class="field-desc">Light direction vector. Required for <code>directional</code> lights.</td></tr>
+          <tr><td class="field-name">scale</td><td><span class="field-type t-array">array[3]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Visual scale of the light source gizmo. Does not affect radius. Keep small: <code>[0.1, 0.1, 0.1]</code>.</td></tr>
+          <tr><td class="field-name">ambient</td><td><span class="field-type t-array">array[4]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">RGBA ambient term. Fills shadow areas. Keep dark: <code>[0.1–0.2, ...]</code>. <strong>Yellow ambient causes yellow tinting.</strong></td></tr>
+          <tr><td class="field-name">diffuse</td><td><span class="field-type t-array">array[4]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">RGBA diffuse term. Main surface lighting color. For neutral: <code>[0.8, 0.8, 0.8, 1]</code>.</td></tr>
+          <tr><td class="field-name">specular</td><td><span class="field-type t-array">array[4]</span></td><td class="field-req req-yes">yes</td><td class="field-desc">RGBA specular highlight color. Keep neutral or match diffuse.</td></tr>
+          <tr><td class="field-name">shininess</td><td><span class="field-type t-number">number</span></td><td class="field-req req-yes">yes</td><td class="field-desc">Phong shininess exponent. Higher = tighter highlights. Typical: <code>16</code>–<code>64</code>.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-warning">
+        <strong>Common mistake:</strong> Setting <code>ambient</code> to <code>[1.0, 1.0, 0.0, 1.0]</code> makes the entire scene look yellow because ambient is added to every surface. Keep ambient dark and neutral — e.g. <code>[0.15, 0.1, 0.05, 1.0]</code> for warm torchlight.
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">light — warm point light (torch)</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">{</span>
+  <span class="k">"type"</span><span class="p">:</span>      <span class="s">"point"</span><span class="p">,</span>
+  <span class="k">"color"</span><span class="p">:</span>     <span class="p">[</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.85</span><span class="p">,</span> <span class="n">0.5</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"position"</span><span class="p">:</span>  <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">4.9</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+  <span class="k">"scale"</span><span class="p">:</span>     <span class="p">[</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">0.1</span> <span class="p">],</span>
+  <span class="k">"ambient"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">0.15</span><span class="p">,</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">0.05</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"diffuse"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.85</span><span class="p">,</span> <span class="n">0.5</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"specular"</span><span class="p">:</span>  <span class="p">[</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">0.7</span><span class="p">,</span> <span class="n">0.4</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"shininess"</span><span class="p">:</span> <span class="n">32.0</span>
+<span class="p">}</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">light — neutral directional (sun)</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">{</span>
+  <span class="k">"type"</span><span class="p">:</span>       <span class="s">"directional"</span><span class="p">,</span>
+  <span class="k">"color"</span><span class="p">:</span>      <span class="p">[</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"direction"</span><span class="p">:</span>  <span class="p">[</span> <span class="n">-0.3</span><span class="p">,</span> <span class="n">-1.0</span><span class="p">,</span> <span class="n">0.2</span> <span class="p">],</span>  <span class="c">// angled downward like a sun</span>
+  <span class="k">"scale"</span><span class="p">:</span>      <span class="p">[</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">0.5</span><span class="p">,</span> <span class="n">0.1</span> <span class="p">],</span>
+  <span class="k">"ambient"</span><span class="p">:</span>    <span class="p">[</span> <span class="n">0.2</span><span class="p">,</span> <span class="n">0.2</span><span class="p">,</span> <span class="n">0.2</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"diffuse"</span><span class="p">:</span>    <span class="p">[</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"specular"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">0.6</span><span class="p">,</span> <span class="n">0.6</span><span class="p">,</span> <span class="n">0.6</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+  <span class="k">"shininess"</span><span class="p">:</span>  <span class="n">16.0</span>
+<span class="p">}</span></pre>
+      </div>
+    </div>
+
+    <!-- SKYBOX -->
+    <div class="section anchor" id="skybox">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h3>skybox</h3>
+      </div>
+      <p class="section-desc">Six image paths for a cube-mapped skybox. Each face must be the same resolution.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="field-name">top</td><td><span class="field-type t-string">string</span></td><td class="field-desc">+Y face (sky above).</td></tr>
+          <tr><td class="field-name">bottom</td><td><span class="field-type t-string">string</span></td><td class="field-desc">−Y face (ground below).</td></tr>
+          <tr><td class="field-name">front</td><td><span class="field-type t-string">string</span></td><td class="field-desc">+Z face.</td></tr>
+          <tr><td class="field-name">back</td><td><span class="field-type t-string">string</span></td><td class="field-desc">−Z face.</td></tr>
+          <tr><td class="field-name">left</td><td><span class="field-type t-string">string</span></td><td class="field-desc">−X face.</td></tr>
+          <tr><td class="field-name">right</td><td><span class="field-type t-string">string</span></td><td class="field-desc">+X face.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">skybox — example</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">"skybox"</span>: <span class="p">{</span>
+  <span class="k">"top"</span><span class="p">:</span>    <span class="s">"Assets\\Images\\lv1\\top.png"</span><span class="p">,</span>
+  <span class="k">"bottom"</span><span class="p">:</span> <span class="s">"Assets\\Images\\lv1\\bottom.png"</span><span class="p">,</span>
+  <span class="k">"front"</span><span class="p">:</span>  <span class="s">"Assets\\Images\\lv1\\front.png"</span><span class="p">,</span>
+  <span class="k">"back"</span><span class="p">:</span>   <span class="s">"Assets\\Images\\lv1\\back.png"</span><span class="p">,</span>
+  <span class="k">"left"</span><span class="p">:</span>   <span class="s">"Assets\\Images\\lv1\\left.png"</span><span class="p">,</span>
+  <span class="k">"right"</span><span class="p">:</span>  <span class="s">"Assets\\Images\\lv1\\right.png"</span>
+<span class="p">}</span></pre>
+      </div>
+    </div>
+
+    <!-- SHADERS -->
+    <div class="section anchor" id="shaders">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h3>Shaders</h3>
+      </div>
+      <p class="section-desc">The <code>shader</code> field on both player and objects selects the GLSL program used to render that mesh.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Shader Name</th><th>Use On</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="field-name">pointLightShader</td>
+            <td><span class="field-type t-string">objects, player</span></td>
+            <td class="field-desc">Phong shading driven by point lights in the scene. Use this for indoor/enclosed levels with explicit light sources.</td>
+          </tr>
+          <tr>
+            <td class="field-name">directionalLight</td>
+            <td><span class="field-type t-string">objects</span></td>
+            <td class="field-desc">Phong shading driven by a directional light (sun-like). Use for outdoor/open levels or model objects.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-info">
+        <strong>Mixing shaders:</strong> You can mix shaders within a level — for example, use <code>directionalLight</code> on large terrain meshes and <code>pointLightShader</code> on props and the player. Match each object's shader to the light type it should respond to.
+      </div>
+    </div>
+
+    <!-- LIGHT TYPES -->
+    <div class="section anchor" id="light-types">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h3>Light Types</h3>
+      </div>
+      <p class="section-desc">Two light types are supported. Choose based on the scene's mood and scale.</p>
+
+      <table class="field-table">
+        <thead>
+          <tr><th>Type</th><th>Required Field</th><th>Behavior</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="field-name">point</td>
+            <td><code>position [x,y,z]</code></td>
+            <td class="field-desc">Emits light in all directions from a world position. Attenuates with distance. Ideal for torches, lamps, and interior lighting. Place near the ceiling or inside lanterns.</td>
+          </tr>
+          <tr>
+            <td class="field-name">directional</td>
+            <td><code>direction [x,y,z]</code></td>
+            <td class="field-desc">Infinite parallel light with no falloff. All surfaces lit equally regardless of distance. Ideal for sunlight, moonlight. Direction should point <em>toward</em> surfaces, e.g. <code>[-0.3, -1.0, 0.2]</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-tip">
+        <strong>Multiple lights:</strong> You can have several point lights in one level to simulate torches at different positions. Each light adds to the scene — ambient values stack, so keep individual ambient values low when using multiple lights.
+      </div>
+    </div>
+
+    <!-- FULL EXAMPLE -->
+    <div class="section anchor" id="full-example">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h3>Full Example</h3>
+      </div>
+      <p class="section-desc">A minimal but complete level file — one room with floor, four walls, ceiling, and a point light.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-title">level_minimal.json</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="p">{</span>
+  <span class="k">"levelName"</span><span class="p">:</span>      <span class="s">"The First Room"</span><span class="p">,</span>
+  <span class="k">"levelNo"</span><span class="p">:</span>        <span class="n">1</span><span class="p">,</span>
+  <span class="k">"version"</span><span class="p">:</span>        <span class="s">"1.0"</span><span class="p">,</span>
+  <span class="k">"texelsPerUnit"</span><span class="p">:</span>  <span class="n">1.0</span><span class="p">,</span>
+
+  <span class="k">"player"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">"img"</span><span class="p">:</span>           <span class="s">"Assets\\Images\\lv1\\player.png"</span><span class="p">,</span>
+    <span class="k">"img_spec"</span><span class="p">:</span>      <span class="s">"Assets\\Images\\lv1\\player.png"</span><span class="p">,</span>
+    <span class="k">"shader"</span><span class="p">:</span>        <span class="s">"pointLightShader"</span><span class="p">,</span>
+    <span class="k">"moveSpeed"</span><span class="p">:</span>     <span class="n">3.5</span><span class="p">,</span>
+    <span class="k">"position"</span><span class="p">:</span>      <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+    <span class="k">"scale"</span><span class="p">:</span>         <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">0.5</span> <span class="p">],</span>
+    <span class="k">"yaw"</span><span class="p">:</span>           <span class="n">0.0</span><span class="p">,</span>  <span class="k">"pitch"</span><span class="p">:</span> <span class="n">0.0</span><span class="p">,</span>
+    <span class="k">"height"</span><span class="p">:</span>        <span class="n">1.4</span><span class="p">,</span>
+    <span class="k">"fov"</span><span class="p">:</span>           <span class="n">45.0</span><span class="p">,</span>
+    <span class="k">"farPlane"</span><span class="p">:</span>      <span class="n">100.0</span><span class="p">,</span>  <span class="k">"nearPlane"</span><span class="p">:</span> <span class="n">0.1</span><span class="p">,</span>
+    <span class="k">"verticalForce"</span><span class="p">:</span> <span class="n">5.0</span><span class="p">,</span>
+    <span class="k">"isUnderWater"</span><span class="p">:</span>  <span class="b">false</span><span class="p">,</span>
+    <span class="k">"walk"</span><span class="p">:</span>          <span class="s">"Assets\\Audio\\walk.wav"</span><span class="p">,</span>
+    <span class="k">"jmp"</span><span class="p">:</span>           <span class="s">"Assets\\Audio\\jmp.wav"</span><span class="p">,</span>
+    <span class="k">"children"</span><span class="p">:</span>      <span class="p">[]</span>
+  <span class="p">},</span>
+
+  <span class="k">"objects"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span> <span class="k">"id"</span><span class="p">:</span> <span class="n">1</span><span class="p">,</span> <span class="k">"type"</span><span class="p">:</span> <span class="s">"static_platform"</span><span class="p">,</span>
+      <span class="k">"img"</span><span class="p">:</span> <span class="s">"Assets\\Images\\lv1\\ground.png"</span><span class="p">,</span> <span class="k">"img_spec"</span><span class="p">:</span> <span class="s">"Assets\\Images\\lv1\\ground.png"</span><span class="p">,</span>
+      <span class="k">"shininess"</span><span class="p">:</span> <span class="n">16.0</span><span class="p">,</span> <span class="k">"noOfRepeationX"</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span> <span class="k">"noOfRepeationY"</span><span class="p">:</span> <span class="n">4</span><span class="p">,</span>
+      <span class="k">"hasAudio"</span><span class="p">:</span> <span class="b">false</span><span class="p">,</span> <span class="k">"shader"</span><span class="p">:</span> <span class="s">"pointLightShader"</span><span class="p">,</span>
+      <span class="k">"audio"</span><span class="p">:</span> <span class="s">"Assets\\Audio\\lv1\\bg.wav"</span><span class="p">,</span> <span class="k">"is3dAudio"</span><span class="p">:</span> <span class="b">false</span><span class="p">,</span>
+      <span class="k">"position"</span><span class="p">:</span> <span class="p">[</span><span class="n">0</span><span class="p">,</span><span class="n">0</span><span class="p">,</span><span class="n">0</span><span class="p">],</span> <span class="k">"rotationAngle"</span><span class="p">:</span> <span class="n">0</span><span class="p">,</span> <span class="k">"rotationAxis"</span><span class="p">:</span> <span class="p">[</span><span class="n">0</span><span class="p">,</span><span class="n">1</span><span class="p">,</span><span class="n">0</span><span class="p">],</span>
+      <span class="k">"scale"</span><span class="p">:</span> <span class="p">[</span><span class="n">10</span><span class="p">,</span><span class="n">0.1</span><span class="p">,</span><span class="n">10</span><span class="p">],</span> <span class="k">"dynamicFriction"</span><span class="p">:</span> <span class="n">0.8</span><span class="p">,</span> <span class="k">"bounceness"</span><span class="p">:</span> <span class="n">0</span><span class="p">,</span>
+      <span class="k">"mass"</span><span class="p">:</span> <span class="n">1000</span><span class="p">,</span> <span class="k">"isStatic"</span><span class="p">:</span> <span class="b">false</span><span class="p">,</span> <span class="k">"isMovable"</span><span class="p">:</span> <span class="b">false</span><span class="p">,</span>
+      <span class="k">"meshEnabled"</span><span class="p">:</span> <span class="b">true</span><span class="p">,</span> <span class="k">"movable"</span><span class="p">:</span> <span class="b">null</span> <span class="p">}</span>
+  <span class="p">],</span>
+
+  <span class="k">"lights"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="k">"type"</span><span class="p">:</span>      <span class="s">"point"</span><span class="p">,</span>
+      <span class="k">"color"</span><span class="p">:</span>     <span class="p">[</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">1.0</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+      <span class="k">"position"</span><span class="p">:</span>  <span class="p">[</span> <span class="n">0.0</span><span class="p">,</span> <span class="n">4.9</span><span class="p">,</span> <span class="n">0.0</span> <span class="p">],</span>
+      <span class="k">"scale"</span><span class="p">:</span>     <span class="p">[</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">0.1</span><span class="p">,</span> <span class="n">0.1</span> <span class="p">],</span>
+      <span class="k">"ambient"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">0.2</span><span class="p">,</span> <span class="n">0.2</span><span class="p">,</span> <span class="n">0.2</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+      <span class="k">"diffuse"</span><span class="p">:</span>   <span class="p">[</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">0.8</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+      <span class="k">"specular"</span><span class="p">:</span>  <span class="p">[</span> <span class="n">0.6</span><span class="p">,</span> <span class="n">0.6</span><span class="p">,</span> <span class="n">0.6</span><span class="p">,</span> <span class="n">1.0</span> <span class="p">],</span>
+      <span class="k">"shininess"</span><span class="p">:</span> <span class="n">16.0</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+
+  <span class="k">"skybox"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">"top"</span><span class="p">:</span>    <span class="s">"Assets\\Images\\lv1\\top.png"</span><span class="p">,</span>
+    <span class="k">"bottom"</span><span class="p">:</span> <span class="s">"Assets\\Images\\lv1\\bottom.png"</span><span class="p">,</span>
+    <span class="k">"front"</span><span class="p">:</span>  <span class="s">"Assets\\Images\\lv1\\front.png"</span><span class="p">,</span>
+    <span class="k">"back"</span><span class="p">:</span>   <span class="s">"Assets\\Images\\lv1\\back.png"</span><span class="p">,</span>
+    <span class="k">"left"</span><span class="p">:</span>   <span class="s">"Assets\\Images\\lv1\\left.png"</span><span class="p">,</span>
+    <span class="k">"right"</span><span class="p">:</span>  <span class="s">"Assets\\Images\\lv1\\right.png"</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!';
+    btn.style.color = 'var(--accent3)';
+    btn.style.borderColor = 'var(--accent3)';
+    setTimeout(() => {
+      btn.textContent = 'copy';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1800);
+  });
+}
+
+// Highlight active nav on scroll
+const sections = ['overview','root','player','objects','lights','skybox','shaders','light-types','full-example'];
+const navItems = document.querySelectorAll('.nav-item');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  navItems.forEach(el => {
+    el.classList.remove('active');
+    if (el.getAttribute('onclick')?.includes(current)) el.classList.add('active');
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
